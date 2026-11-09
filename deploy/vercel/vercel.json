@@ -1,0 +1,14 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "npm install && (cd ../../api && npm ci --omit=optional) && (cd ../../frontend && npm ci --ignore-scripts)",
+  "buildCommand": "(cd ../../frontend && npm run build) && rm -rf public && cp -r ../../frontend/dist public && mkdir -p public/exercise-media && cp -r ../../catalogue/media/. public/exercise-media/",
+  "outputDirectory": "public",
+  "functions": {
+    "api/index.js": { "maxDuration": 60, "includeFiles": "../../api/**" }
+  },
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/index" },
+    { "source": "/((?!assets/|exercise-media/).*)", "destination": "/index.html" }
+  ]
+}
