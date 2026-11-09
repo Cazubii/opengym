@@ -240,6 +240,7 @@ If you'd rather control who gets in, these optional settings in `.env` turn that
 ```bash
 ADMIN_UIDS=youruserid      # comma-separated; these users get the admin dashboard too
 INVITE_ONLY=1              # new profiles need an invite code
+UNIQUE_NAMES=1             # no two profiles may share a name (new profiles only)
 ALLOW_GUEST=0              # remove "Continue without account"
 FIRST_USER_ADMIN=1         # the first profile on an empty instance becomes its admin
 ```

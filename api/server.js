@@ -79,6 +79,11 @@ const ALLOW_GUEST = !/^(0|false|no|off)$/i.test(process.env.ALLOW_GUEST || '');
 // every account that opts in, so an instance has to ask for it. While it is off every password
 // route answers 404 and the app shows none of it; hashes already stored stay where they are.
 const PASSWORD_LOGIN = /^(1|true|yes|on)$/i.test(process.env.PASSWORD_LOGIN || '');
+// Every profile name unique, passkey profiles included (compared the way nameKey() folds it), so
+// a name says who someone is. Off by default: profile names were never unique, and an instance
+// that already has two profiles of one name must not lock either out. It only decides whether a
+// new profile may take a name; the profiles already there keep theirs.
+const UNIQUE_NAMES = /^(1|true|yes|on)$/i.test(process.env.UNIQUE_NAMES || '');
 // The language the sign-in screen, and every profile that never picked one, starts in (#303) —
 // for an instance whose people share a language. Only a tag's shape is checked here; the app
 // matches it against the languages it has and ignores one it does not know. Unset, it is left
@@ -1134,9 +1139,10 @@ const hasPassword = u => !!(u && u.pw && typeof u.pw.h === 'string');
 // (proveOwner), and does not keep a profile's last passkey in place.
 const passwordWayIn = u => PASSWORD_LOGIN && hasPassword(u);
 const passwordHolder = k => db.users.find(u => hasPassword(u) && nameKey(u.name) === k) || null;
-const holdsName = u => hasPassword(u) || !!(u.pwReset && u.pwReset.exp > Date.now());
+const holdsName = u => UNIQUE_NAMES || hasPassword(u) || !!(u.pwReset && u.pwReset.exp > Date.now());
 // An e-mail is a second name to sign in with (see "e-mail as a sign-in name" below), so a name
 // is also taken by another profile's e-mail — only ever relevant for a name with an "@" in it.
+const NAME_TAKEN = { error: 'another profile already signs in with this name', code: 'name-taken' };
 const nameTaken = (name, exceptId) => {
   const k = nameKey(name);
   return db.users.some(u => u.id !== exceptId && ((holdsName(u) && nameKey(u.name) === k) || u.email === k));
@@ -2138,6 +2144,9 @@ const routes = {
     const body = await readBody(req);
     const name = text(body.name).trim().slice(0, 40);
     if (!name) return json(res, 400, { error: 'name required' });
+    // Asked here so the prompt for a passkey never comes up for a name that cannot be had, and
+    // again in verify, where another profile could have taken it meanwhile.
+    if (UNIQUE_NAMES && nameTaken(name)) return json(res, 409, NAME_TAKEN);
     const code = text(body.code).trim().toUpperCase();
     if (INVITE_ONLY && !db.invites.some(i => i.code === code && !i.usedBy && !i.revoked)) {
       // The rejected code itself is never recorded — a near-miss guess in the log is a liability.
@@ -2194,6 +2203,10 @@ const routes = {
         audit(req, 'auth.register.fail', { ok: false, name: c.name, msg: 'invite-invalid' });
         return json(res, 403, { error: 'invite code is no longer valid, ask for a new one', code: 'invite' });
       }
+    }
+    if (UNIQUE_NAMES && nameTaken(c.name)) {
+      audit(req, 'auth.register.fail', { ok: false, name: c.name, msg: 'name-taken' });
+      return json(res, 409, NAME_TAKEN);
     }
     const user = { id: c.uid, name: c.name, created: new Date().toISOString() };
     if (invite) { user.invitedBy = invite.code; invite.usedBy = user.id; invite.usedAt = user.created; }

@@ -380,6 +380,7 @@ function credToJSON(cred) {
 export function passkeyError(e, fallback) {
   switch (e?.data?.code) {
     case 'invite': return t('That invite code is not valid.')
+    case 'name-taken': return t('Another profile already signs in with this name.')
     case 'unknown-credential': return t('This server doesn’t know that passkey. Make a profile first.')
     case 'disabled': return t('This account has been disabled.')
     case 'challenge-expired': return t('That took a little too long. Give it another go.')

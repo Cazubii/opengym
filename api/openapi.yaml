@@ -78,6 +78,8 @@ info:
 
     ### Environment-dependent behavior
     - `INVITE_ONLY=1`: registration requires a valid invite code (minted by an admin).
+    - `UNIQUE_NAMES=1`: registration refuses a name another profile already has (409,
+      code `name-taken`), passkey profiles included; compared case- and space-insensitively.
     - `ALLOW_GUEST=0`: hides the client-side "continue without account" mode; the
       server merely reports the flag via `GET /api/config` (guest mode never talks to
       this API at all).
