@@ -8,6 +8,8 @@ import { nextPrescription } from '../lib/progression.js'
 import { buildCombinedEntries } from '../lib/session-merge.js'
 import { buildCompletedWorkout } from '../lib/finish-workout.js'
 import { isWarmupRow } from '../lib/workout-model.js'
+import { effectiveRoutineIds } from '../lib/history.js'
+import { todayISO } from '../lib/format.js'
 import { discardedFor } from '../lib/watch-sync.js'
 import { finishWorkout, finishWorkoutSheet } from '../sheets.jsx'
 import { menuItemsOf } from '../lib/menu-items.js'
@@ -937,6 +939,26 @@ describe('Workout discard timer lifecycle', () => {
     expect(mocks.work).toBeNull()
     expect(mocks.stopRest).toHaveBeenCalledOnce()
     expect(mocks.stopWork).toHaveBeenCalledOnce()
+  })
+
+  it('discards only this planned date and keeps its weekly routine assignment', async () => {
+    const iso = todayISO()
+    const weekday = new Date(iso + 'T12:00:00').getDay()
+    const routines = [{ id: 'push', name: 'Push', ex: [] }]
+    await mount([exercise('plain-bench', [false])], 0, {
+      routines,
+      week: { [weekday]: ['push'] },
+      dayPlan: {},
+      active: { id: 'planned-session', d: iso, routineIds: ['push'], routineId: 'push', name: 'Push' },
+    })
+    expect(effectiveRoutineIds(mocks.S, iso)).toEqual(['push'])
+
+    await requestDiscard()
+    await act(async () => { mocks.confirmSheet.mock.calls[0][0].onConfirm() })
+
+    expect(mocks.S.dayPlan[iso]).toBe('rest')
+    expect(mocks.S.week[weekday]).toEqual(['push'])
+    expect(effectiveRoutineIds(mocks.S, iso)).toEqual([])
   })
 
   // #776: gone from the watch's snapshot, a discarded workout looked finished and was saved to

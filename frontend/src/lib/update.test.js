@@ -306,9 +306,11 @@ describe('pickApk: Standard, Plus and HD', () => {
     }
   })
 
-  it('a phone from before v1.4.2 (first .apk, first .sha256 in name order) lands on Standard, checksum matching', () => {
-    expect(sorted.find(x => /\.apk$/i.test(x.name)).name).toBe('openGym-1.4.2.apk')
-    expect(sorted.find(x => /\.apk\.sha256$/i.test(x.name)).name).toBe('openGym-1.4.2.apk.sha256')
+  it('the default Standard variant ignores GitHub name order and matches its own checksum', () => {
+    const { apk, hash } = pickApk(sorted)
+    expect(sorted.find(x => /\.apk$/i.test(x.name)).name).toBe('GymClick-HD-1.4.2.apk')
+    expect(apk.name).toBe('openGym-1.4.2.apk')
+    expect(hash.name).toBe('openGym-1.4.2.apk.sha256')
   })
 
   it('a Plus build is not moved to another kind when a release has no Plus APK', () => {

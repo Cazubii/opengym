@@ -1699,7 +1699,29 @@ function ActiveWorkout() {
   // the two got mixed up (#751).
   // Named for the watch first: gone from its snapshot it would look finished, and be saved to Apple Health (#776).
   // The watch's own Discard (confirmed there) runs this too.
-  const discardNow = () => { markDiscarded(useStore.getState().S.active?.id); update(s => { s.active = null }); stopRest(); stopWork(); nav('/home') }
+  const discardNow = () => {
+    const active = useStore.getState().S.active
+    markDiscarded(active?.id)
+    update(s => {
+      const ids = [].concat(s.active?.routineIds || [])
+      const iso = s.active?.d
+      if (!s.active?.backfill && iso && ids.length) {
+        const planned = effectiveRoutineIds({
+          ...s, routines: s.routines || [], week: s.week || {}, dayPlan: s.dayPlan || {},
+        }, iso, todayISO())
+        // Discarding the complete session planned for this date makes that occurrence a rest
+        // day. The weekday plan itself stays intact for its next occurrence. Only clear the
+        // date when this was the whole plan, so discarding one routine cannot hide others.
+        if (planned.length === ids.length && planned.every((id, i) => id === ids[i])) {
+          s.dayPlan = { ...(s.dayPlan || {}), [iso]: 'rest' }
+        }
+      }
+      s.active = null
+    })
+    stopRest()
+    stopWork()
+    nav('/home')
+  }
   const discardWorkout = () => confirmSheet({
     title: t('Discard workout?'), message: t('The sets you logged in this session will be lost.'), confirmText: t('Discard'), danger: true,
     onConfirm: discardNow,

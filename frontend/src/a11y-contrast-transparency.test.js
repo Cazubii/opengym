@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
+import { ACCENTS } from './lib/format.js'
 
 const read = (f) => readFileSync(resolve(process.cwd(), 'src', f), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '')
 
@@ -48,14 +49,14 @@ describe('Increase Contrast (#707)', () => {
   })
 
   it('every accent keeps a 4.5:1 label on its filled button in both themes', () => {
-    const accents = [...css.matchAll(/:root\[data-accent="(\w+)"\]\s*\{\s*--acc:var\(--(\w+)\)[^}]*--on-acc:(#\w+)/g)]
-    expect(accents.length).toBeGreaterThanOrEqual(8)
+    const accents = [...css.matchAll(/:root\[data-accent="(\w+)"\]\s*\{\s*--acc:\s*(?:var\(--([\w-]+)\)|(#[\da-fA-F]{3,8}))[^}]*--on-acc:\s*(#[\da-fA-F]{3,8})/g)]
+    expect(accents.map(([, name]) => name).sort()).toEqual(Object.keys(ACCENTS).sort())
     const darkInk = token(rule(hc, ':root:not([data-theme="light"])'), '--on-acc')
     const lightInks = Object.fromEntries([...css.matchAll(/((?::root\[data-theme="light"\]\[data-accent="\w+"\],?\s*)+)\{\s*--on-acc:(#\w+)/g)]
       .flatMap((m) => [...m[1].matchAll(/data-accent="(\w+)"/g)].map((a) => [a[1], m[2]])))
-    for (const [, name, colour, ink] of accents) {
-      const dark = hex(token(rule(hc, ':root'), `--${colour}`))
-      const light = hex(token(rule(hc, ':root[data-theme="light"]'), `--${colour}`))
+    for (const [, name, colour, literal, ink] of accents) {
+      const dark = hex(literal || token(rule(hc, ':root'), `--${colour}`))
+      const light = hex(literal || token(rule(hc, ':root[data-theme="light"]'), `--${colour}`))
       expect(ratio(hex(darkInk || ink), dark), `${name} dark`).toBeGreaterThanOrEqual(4.5)
       expect(ratio(hex(lightInks[name] || ink), light), `${name} light`).toBeGreaterThanOrEqual(4.5)
     }

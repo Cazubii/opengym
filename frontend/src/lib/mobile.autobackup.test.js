@@ -1,4 +1,4 @@
-// Auto-backup on the phone (#161): the copies go into Documents/openGym/, and each write keeps
+// Auto-backup on the phone (#161): the copies go into Documents/GymClick/, and each write keeps
 // the newest fourteen there. Nothing outside that folder, and nothing but the app's own dated
 // backups inside it, is ever deleted.
 import { describe, it, expect, beforeEach, vi } from 'vitest'
@@ -41,7 +41,7 @@ const { writeAutoBackup, AUTO_BACKUP_DIR, AUTO_BACKUP_KEEP } = await import('./m
 
 const day = n => { const d = new Date(2026, 0, 1); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10) }
 const backup = d => 'opengym-backup-' + d + '.json'
-const inFolder = () => [...h.files.keys()].filter(k => k.startsWith('DOCUMENTS/openGym/')).map(k => k.slice('DOCUMENTS/openGym/'.length)).sort()
+const inFolder = () => [...h.files.keys()].filter(k => k.startsWith(`DOCUMENTS/${AUTO_BACKUP_DIR}/`)).map(k => k.slice(`DOCUMENTS/${AUTO_BACKUP_DIR}/`.length)).sort()
 const put = (path, data = '{}') => h.files.set('DOCUMENTS/' + path, data)
 
 beforeEach(() => {
@@ -50,10 +50,10 @@ beforeEach(() => {
 })
 
 describe('writeAutoBackup', () => {
-  it('writes today\'s copy into Documents/openGym, not the Documents root', async () => {
+  it('writes today\'s copy into Documents/GymClick, not the Documents root', async () => {
     await writeAutoBackup({ workouts: [{ id: 'w1' }] })
     expect(AUTO_BACKUP_DIR).toBe('GymClick')
-    expect(JSON.parse(h.files.get('DOCUMENTS/openGym/' + backup(todayISO())))).toEqual({ workouts: [{ id: 'w1' }] })
+    expect(JSON.parse(h.files.get(`DOCUMENTS/${AUTO_BACKUP_DIR}/` + backup(todayISO())))).toEqual({ workouts: [{ id: 'w1' }] })
     expect(h.files.has('DOCUMENTS/' + backup(todayISO()))).toBe(false)
   })
 
@@ -70,7 +70,7 @@ describe('writeAutoBackup', () => {
     expect(dated.filter(n => n !== backup(todayISO()))).toEqual([...Array(13)].map((_, i) => backup(day(19 - i))).sort())
     // Everything that is not an automatic backup is untouched.
     expect(inFolder()).toEqual(expect.arrayContaining(['notes.txt', 'opengym-backup-latest.json', backup(day(0)).replace('.json', '.json.bak')]))
-    expect(h.files.has('DOCUMENTS/openGym/' + backup('2020-01-01') + '/inside.json')).toBe(true)
+    expect(h.files.has(`DOCUMENTS/${AUTO_BACKUP_DIR}/` + backup('2020-01-01') + '/inside.json')).toBe(true)
   })
 
   it('never touches the Documents root, where older versions wrote and where a manual export may sit', async () => {
@@ -97,7 +97,7 @@ describe('writeAutoBackup', () => {
 
     h.refuseWrite = false; h.refuseList = true
     await expect(writeAutoBackup({})).resolves.toBeUndefined()
-    expect(h.files.has('DOCUMENTS/openGym/' + backup(todayISO()))).toBe(true)
+    expect(h.files.has(`DOCUMENTS/${AUTO_BACKUP_DIR}/` + backup(todayISO()))).toBe(true)
     expect(h.deleted).toEqual([])
 
     h.refuseList = false
@@ -116,7 +116,7 @@ describe('writeAutoBackup where today\'s name belongs to another install', () =>
     put(other, '{"theirs":true}')
     h.foreign.add(other)
     await writeAutoBackup({ n: 1 })
-    const second = 'DOCUMENTS/openGym/' + backup(todayISO()).replace('.json', '-2.json')
+    const second = `DOCUMENTS/${AUTO_BACKUP_DIR}/` + backup(todayISO()).replace('.json', '-2.json')
     expect(JSON.parse(h.files.get(second))).toEqual({ n: 1 })
     await writeAutoBackup({ n: 2 })
     expect(JSON.parse(h.files.get(second))).toEqual({ n: 2 })
@@ -126,7 +126,7 @@ describe('writeAutoBackup where today\'s name belongs to another install', () =>
   it('with the first two names owned by earlier installs, the copy goes under the third', async () => {
     for (const n of ['', '-2']) { const p = 'GymClick/' + backup(todayISO()).replace('.json', n + '.json'); put(p, '{"theirs":true}'); h.foreign.add(p) }
     await writeAutoBackup({ n: 3 })
-    expect(JSON.parse(h.files.get('DOCUMENTS/openGym/' + backup(todayISO()).replace('.json', '-3.json')))).toEqual({ n: 3 })
+    expect(JSON.parse(h.files.get(`DOCUMENTS/${AUTO_BACKUP_DIR}/` + backup(todayISO()).replace('.json', '-3.json')))).toEqual({ n: 3 })
   })
 
   it('counts the second names among the fourteen it keeps, and prunes them like any other', async () => {

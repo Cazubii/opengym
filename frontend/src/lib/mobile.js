@@ -331,7 +331,7 @@ export async function printHtml(html, name, { paper = 'a4', footer } = {}) {
   await Print.printHtml({ html, name, paper, ...(footer ? { footer } : {}) })
 }
 
-// "Auto-backup on changes" (Settings): a dated snapshot dropped into Documents/openGym/ —
+// "Auto-backup on changes" (Settings): a dated snapshot dropped into Documents/GymClick/ —
 // visible in Files (iOS) / a file manager (Android), unlike the private mirror nativeSave keeps
 // — so whatever the user points at that folder (a sync app, a manual copy) always has something
 // recent. One file per day; later triggers the same day just overwrite it.
@@ -405,8 +405,8 @@ async function pruneAutoBackups({ Filesystem, Directory }, written) {
    and never in S: S syncs and exports, and a content:// address means nothing anywhere else.
 
    { uri, label }       the chosen folder, and its name as the picker showed it
-   { lost, lostLabel }  the folder stopped accepting copies; they go to Documents/openGym again
-   {}                   the default, Documents/openGym */
+   { lost, lostLabel }  the folder stopped accepting copies; they go to Documents/GymClick again
+   {}                   the default, Documents/GymClick */
 export const BACKUP_FOLDER_FILE = 'opengym-backup-folder.json'
 
 // The plugin proxy lives here and is never handed through a promise: a Capacitor plugin proxy
@@ -453,7 +453,7 @@ export async function chooseBackupFolder() {
   return next
 }
 
-/** Back to Documents/openGym; also how the warning about a lost folder is put away. */
+/** Back to Documents/GymClick; also how the warning about a lost folder is put away. */
 export async function resetBackupFolder() {
   const before = await backupFolder()
   if (before.uri) await releaseFolder(before.uri)

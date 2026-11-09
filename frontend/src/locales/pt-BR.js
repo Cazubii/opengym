@@ -497,7 +497,7 @@ export const PT_BR_OVERRIDES = {
 
   // --- drop-sets, auto-backup and server pairing ---
   'Auto-backup on changes': 'Backup automático ao alterar',
-  'Saves a dated copy to Documents/openGym after finishing a workout or editing a routine, and keeps the newest {0}. Point a sync app at that folder, or copy it out by hand.': 'Salva uma cópia datada em Documentos/openGym depois de terminar um treino ou editar uma rotina, e mantém as {0} mais recentes. Aponte um app de sincronização para essa pasta, ou copie na mão.',
+  'Saves a dated copy to Documents/GymClick after finishing a workout or editing a routine, and keeps the newest {0}. Point a sync app at that folder, or copy it out by hand.': 'Salva uma cópia datada em Documentos/GymClick depois de terminar um treino ou editar uma rotina, e mantém as {0} mais recentes. Aponte um app de sincronização para essa pasta, ou copie na mão.',
   'Disconnect': 'Desconectar',
   'Disconnect from your server?': 'Desconectar do seu servidor?',
   'Disconnected. Back to local-only': 'Desconectado. De volta ao modo só local',
@@ -1119,8 +1119,8 @@ export const PT_BR_OVERRIDES = {
   'Backup folder': 'Pasta de backup',
   'Use default folder': 'Usar a pasta padrão',
   'This folder can’t be used for backups.': 'Esta pasta não pode ser usada para backups.',
-  'GymClick can no longer write to “{0}”, so copies go to Documents/openGym again. Choose the folder again to switch back.': 'O GymClick não consegue mais gravar em “{0}”, então as cópias voltam para Documents/openGym. Escolha a pasta de novo para voltar a ela.',
-  'GymClick can no longer write to the chosen folder, so copies go to Documents/openGym again. Choose the folder again to switch back.': 'O GymClick não consegue mais gravar na pasta escolhida, então as cópias voltam para Documents/openGym. Escolha a pasta de novo para voltar a ela.',
+  'GymClick can no longer write to “{0}”, so copies go to Documents/GymClick again. Choose the folder again to switch back.': 'O GymClick não consegue mais gravar em “{0}”, então as cópias voltam para Documents/GymClick. Escolha a pasta de novo para voltar a ela.',
+  'GymClick can no longer write to the chosen folder, so copies go to Documents/GymClick again. Choose the folder again to switch back.': 'O GymClick não consegue mais gravar na pasta escolhida, então as cópias voltam para Documents/GymClick. Escolha a pasta de novo para voltar a ela.',
   // --- missed-workout nudge (lib/nudge.js; the push copy is mirrored in api/nudge-copy.js) ---
   'Nudge me when I skip a planned workout': 'Me avise quando eu pular um treino planejado',
   'One nudge in the evening of a planned day with nothing logged, between 20:00 and 21:30. After 3 missed days in a row it goes quiet until your next workout.': 'Um aviso à noite em um dia planejado sem nada registrado, entre 20:00 e 21:30. Depois de 3 dias perdidos seguidos ele fica quieto até o seu próximo treino.',
