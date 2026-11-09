@@ -16,7 +16,7 @@ function VoiceShortcuts({ close }) {
     <h3>{voiceRowTitle()}</h3>
     {android
       ? <>
-        <div className="small muted" style={{ marginBottom: 10 }}>{t('Touch and hold the openGym icon. You can also drag a shortcut onto your home screen.')}</div>
+        <div className="small muted" style={{ marginBottom: 10 }}>{t('Touch and hold the GymClick icon. You can also drag a shortcut onto your home screen.')}</div>
         <Section>
           <Row icon="play" iconTint="var(--green)" title={t('Start workout')} subtitle={t('Starts what’s planned for today, or opens the one already running.')} />
           <Row icon="scale" iconTint="var(--green)" title={t('Log body weight')} />
@@ -27,10 +27,10 @@ function VoiceShortcuts({ close }) {
       : <>
         <div className="small muted" style={{ marginBottom: 10 }}>{t('Ask Siri:')}</div>
         <Section>
-          <Row icon="play" iconTint="var(--green)" title={t('“Start my workout in openGym”')} subtitle={t('Starts what’s planned for today, or opens the one already running.')} />
-          <Row icon="scale" iconTint="var(--green)" title={t('“Log my weight in openGym”')} subtitle={t('Siri asks for the number and logs it without opening the app.')} />
-          <Row icon="calendar" iconTint="var(--blue)" title={t('“What’s my workout today in openGym”')} />
-          <Row icon="flame" iconTint="var(--orange)" title={t('“How’s my streak in openGym”')} />
+          <Row icon="play" iconTint="var(--green)" title={t('“Start my workout in GymClick”')} subtitle={t('Starts what’s planned for today, or opens the one already running.')} />
+          <Row icon="scale" iconTint="var(--green)" title={t('“Log my weight in GymClick”')} subtitle={t('Siri asks for the number and logs it without opening the app.')} />
+          <Row icon="calendar" iconTint="var(--blue)" title={t('“What’s my workout today in GymClick”')} />
+          <Row icon="flame" iconTint="var(--orange)" title={t('“How’s my streak in GymClick”')} />
         </Section>
         <div className="small dim" style={{ marginBottom: 12 }}>{t('They are in the Shortcuts app and in Spotlight too, ready for an automation or the Action button.')}</div>
       </>}

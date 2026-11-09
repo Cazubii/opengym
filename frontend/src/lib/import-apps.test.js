@@ -370,7 +370,7 @@ describe('telling files apart', () => {
     expect(parseImportFile(strong).source).toBe('Strong')
   })
 
-  it('never imports a JSON it does not know, and points openGym’s own files to their importers', () => {
+  it('never imports a JSON it does not know, and points GymClick’s own files to their importers', () => {
     expect(parseImportFile('{"hello":1}')).toEqual({ error: 'unrecognised' })
     expect(parseImportFile('[{"a":1}]')).toEqual({ error: 'unrecognised' })
     expect(parseImportFile('{ not json')).toEqual({ error: 'unrecognised' })

@@ -1,4 +1,4 @@
-// openGym's own date field (#809). The system <input type="date"> looked different on every
+// GymClick's own date field (#809). The system <input type="date"> looked different on every
 // phone, and on iOS 27 WebKit drew it wider than the sheet it sat in, so the body-weight sheet
 // scrolled sideways. This is a plain button that looks like the app's other fields and opens a
 // month grid in the same style as the training calendar (sheets.jsx, Calendar): the same day

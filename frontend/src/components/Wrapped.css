@@ -1,4 +1,4 @@
-/* Your year in openGym (components/Wrapped.jsx): full screen, the app's own colours, big type.
+/* Your year in GymClick (components/Wrapped.jsx): full screen, the app's own colours, big type.
    Over the page and the tab bar, under the sheets (#modal-root, z-index 100) so Share opens on top. */
 .wrapped{
   position:fixed;inset:0;z-index:90;display:flex;flex-direction:column;overflow:hidden;

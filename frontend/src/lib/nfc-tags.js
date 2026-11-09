@@ -1,4 +1,4 @@
-// NFC stickers (v1.4.4): what an openGym sticker says, and what a tap on one does.
+// NFC stickers (v1.4.4): what an GymClick sticker says, and what a tap on one does.
 //
 // The app writes plain NDEF URI records itself (lib/nfc.js, NfcTagsPlugin on the phones, Web NFC
 // in Chrome on Android). Two kinds:
@@ -11,7 +11,7 @@
 // closed: Android hands the tag to the app through the NDEF_DISCOVERED filter in the manifest,
 // and iOS background tag reading only routes web links (custom schemes are not supported there);
 // until opengym.ch is an associated domain of the iPhone app, the link opens opengym.ch/nfc in
-// Safari, which hands it on as opengym://nfc?... A phone without openGym lands on that page too.
+// Safari, which hands it on as opengym://nfc?... A phone without GymClick lands on that page too.
 // The short opengym:// forms (opengym://checkin, opengym://exercise/ID) are read as well.
 //
 // Only our own stickers: nothing here reads, copies or emulates a gym's access card.

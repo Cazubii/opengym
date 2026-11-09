@@ -1,7 +1,7 @@
 // Siri, the Shortcuts app and Google Assistant (v1.4.4). What the voice side hands the app, and
 // what the app does with it:
 //
-//   iPhone (ios/App/App/VoiceIntents.swift): "Log my weight in openGym" runs without opening the
+//   iPhone (ios/App/App/VoiceIntents.swift): "Log my weight in GymClick" runs without opening the
 //     app. The intent leaves a pending weigh-in in the App Group ({ id, w, unit, at, d }), and the
 //     page brings those in when it starts or comes back (importPendingWeighIns, startVoice).
 //     "Start my workout" opens opengym://start?today=1. "What's my workout today?" and "How's my

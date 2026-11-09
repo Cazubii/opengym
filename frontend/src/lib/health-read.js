@@ -1,4 +1,4 @@
-// What openGym takes back from the phone's health hub (#544, #127): Health Connect on Android,
+// What GymClick takes back from the phone's health hub (#544, #127): Health Connect on Android,
 // Apple Health on the iPhone. Two things, each behind its own switch in Settings:
 //
 //   - the heart rate during a finished workout, per set and for the session (lib/heart-rate.js
@@ -9,8 +9,8 @@
 // the log. The rules:
 //   - a set that already has a heart rate keeps it (the Apple Watch measured it live);
 //   - a weigh-in read in joins the day's others with its own time (lib/weigh-ins.js), never
-//     replacing one typed into openGym; the daily-value setting picks the day's number;
-//   - openGym's own records in the hub (what it wrote there itself) are never read back as new;
+//     replacing one typed into GymClick; the daily-value setting picks the day's number;
+//   - GymClick's own records in the hub (what it wrote there itself) are never read back as new;
 //   - an imported weigh-in carries `src` and is never written back to the hub (no ping-pong:
 //     lib/health-connect.js healthRecords leaves it out).
 import { hrFromSamples, sanitizeHr } from './heart-rate.js'
@@ -22,10 +22,10 @@ export const LB_PER_KG = 2.2046226218
 // Weigh-ins outside this are a typo or another person's profile in the hub, not a body weight.
 const KG_MIN = 20
 const KG_MAX = 400
-// Packages and bundle ids that are openGym: the app, its test build, the Apple Watch app.
+// Packages and bundle ids that are GymClick: the app, its test build, the Apple Watch app.
 const OWN = /^ch\.duartesantos\.opengym(\.|$)/
 
-/** Whether a record in the hub is one openGym wrote itself (by its client id or by its origin). */
+/** Whether a record in the hub is one GymClick wrote itself (by its client id or by its origin). */
 export function isOwnRecord(rec) {
   if (!rec || typeof rec !== 'object') return false
   if (/^opengym-/.test(String(rec.clientId || ''))) return true
@@ -82,7 +82,7 @@ export function hubReadingId(r) {
  * `seen` is this phone's memo of what it imported ({ [reading id]: { id, t } }), updated in place,
  * which makes a second read of the same records a no-op. A sample is left out when the day already
  * has it (by the hub's id) or another weigh-in at the same minute (typed in, or read by another
- * phone), when it was removed in openGym, or when its whole day was deleted in openGym after it
+ * phone), when it was removed in GymClick, or when its whole day was deleted in GymClick after it
  * was taken. Weights go in in the profile's unit. Returns the days changed.
  */
 export function mergeWeighIns(S, records, { src, seen = {} } = {}) {
@@ -104,7 +104,7 @@ export function mergeWeighIns(S, records, { src, seen = {} } = {}) {
     if (seen[rid]) continue
     const d = isoOf(new Date(r.t)), at = timeOf(r.t)
     const day = S.bodyweight.find(b => b && b.d === d)
-    if (!day && Number(deleted[d]) > r.t) continue        // the day was removed in openGym after it was taken
+    if (!day && Number(deleted[d]) > r.t) continue        // the day was removed in GymClick after it was taken
     if (day) {
       const rs = readingsOf(day)
       const removed = Number(day.gone?.[rid]) > 0

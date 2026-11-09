@@ -32,8 +32,8 @@ export const TYPE_PAUSE_MS = 350
 const explainAlways = () => new Promise(resolve => confirmSheet({
   title: ios() ? t('Allow location “Always”?') : t('Allow location “All the time”?'),
   message: <>
-    <p>{t('To notice that you walked into your gym while openGym is closed, the phone needs to let it see your location in the background.')}</p>
-    <p style={{ marginTop: 8 }}>{t('The phone itself watches the gyms you added and only wakes openGym when you arrive. No tracking in between, and your locations never leave this phone.')}</p>
+    <p>{t('To notice that you walked into your gym while GymClick is closed, the phone needs to let it see your location in the background.')}</p>
+    <p style={{ marginTop: 8 }}>{t('The phone itself watches the gyms you added and only wakes GymClick when you arrive. No tracking in between, and your locations never leave this phone.')}</p>
     {!ios() && <p style={{ marginTop: 8 }}>{t('On the next screen, pick “Allow all the time”.')}</p>}
   </>,
   // One button that always leads to the phone's own dialog, where the no belongs (App Review
@@ -47,7 +47,7 @@ const explainAlways = () => new Promise(resolve => confirmSheet({
 const permLabel = p => !p ? '' : p.background === 'granted' ? (ios() ? t('Always') : t('All the time'))
   : p.location === 'granted' ? t('Only while using the app') : p.location === 'denied' ? t('Not allowed') : t('Not asked yet')
 
-const noLocation = () => t('Location isn’t allowed for openGym. You can change that in the phone’s settings.')
+const noLocation = () => t('Location isn’t allowed for GymClick. You can change that in the phone’s settings.')
 
 // While-using location, asked for if it has not been yet. True when the phone may locate.
 async function mayLocate() {
@@ -105,13 +105,13 @@ export default function GymReminderPage() {
         if (p?.location !== 'granted') { setPerm(p); toast(noLocation()); return }
         p = await askBackgroundLocation()
         setPerm(p)
-        if (p?.background !== 'granted') { toast(t('Without background location the phone can’t spot your gym while openGym is closed.')); return }
+        if (p?.background !== 'granted') { toast(t('Without background location the phone can’t spot your gym while GymClick is closed.')); return }
       }
       try {
         const { LocalNotifications } = await import('@capacitor/local-notifications')
         let n = await LocalNotifications.checkPermissions()
         if (n.display !== 'granted') n = await LocalNotifications.requestPermissions()
-        if (n.display !== 'granted') toast(t('Notifications are off for openGym, so the reminder has nowhere to show up.'))
+        if (n.display !== 'granted') toast(t('Notifications are off for GymClick, so the reminder has nowhere to show up.'))
       } catch { /* no plugin: the native side posts anyway where it may */ }
       await save({ ...config, on: true })
     } finally { setBusy(false) }
@@ -126,7 +126,7 @@ export default function GymReminderPage() {
   const setWin = patch => save({ ...config, window: { ...(win || DEFAULT_WINDOW), ...patch } })
 
   return <>
-    <Section footer={t('Walk into one of your gyms and openGym nudges you to hit Start. Once a day at most, and never when you already trained. Your gyms stay on this phone.')}>
+    <Section footer={t('Walk into one of your gyms and GymClick nudges you to hit Start. Once a day at most, and never when you already trained. Your gyms stay on this phone.')}>
       <Row icon="mapPin" iconTint="var(--green)" title={t('Gym reminder')}>
         <Switch checked={config.on} disabled={busy} onChange={toggle} aria-label={t('Gym reminder')} />
       </Row>
@@ -151,7 +151,7 @@ export default function GymReminderPage() {
       </Row>}
     </Section>
     {perm && <Section footer={perm.background === 'granted' ? null : perm.precise === false
-      ? t('Precise location is off for openGym. Turn it on in the phone’s settings, or your gym can’t be spotted.')
+      ? t('Precise location is off for GymClick. Turn it on in the phone’s settings, or your gym can’t be spotted.')
       : t('The reminder needs location access in the background. You can allow it in the phone’s settings.')}>
       <Row icon="lock" iconTint="var(--grey)" title={t('Location access')} value={permLabel(perm)}
         accessory={perm.background === 'granted' ? 'none' : 'chevron'}
@@ -159,7 +159,7 @@ export default function GymReminderPage() {
     </Section>}
     {perm?.quick && perm.background === 'granted' && <Section footer={perm.quick === 'granted'
       ? t('Near a gym, the phone takes a short GPS look (a few minutes at most) so the nudge comes at the door.')
-      : t('Android can take up to half an hour to notice you walked in. Set openGym’s battery use to Unrestricted and the phone takes a short GPS look when you get near a gym, so the nudge comes at the door.')}>
+      : t('Android can take up to half an hour to notice you walked in. Set GymClick’s battery use to Unrestricted and the phone takes a short GPS look when you get near a gym, so the nudge comes at the door.')}>
       <Row icon="bolt" iconTint="var(--orange)" title={t('Quick arrival check')} value={perm.quick === 'granted' ? t('On') : t('Off')}
         accessory={perm.quick === 'granted' ? 'none' : 'chevron'}
         onClick={perm.quick === 'granted' ? undefined : () => openAppSettings()} />
@@ -359,7 +359,7 @@ export function GymEditPage() {
     </Section>
     {/* Which equipment profile this place means (#808): arriving, a check-in sticker or a workout
         started here makes it the active gym, with a toast. "Don't switch" leaves this place out. */}
-    {gymsOf(S).length > 0 && <Section footer={t('Arrive here, tap a check-in sticker or start a workout here, and openGym uses this gym’s plates, dumbbells and bars.')}>
+    {gymsOf(S).length > 0 && <Section footer={t('Arrive here, tap a check-in sticker or start a workout here, and GymClick uses this gym’s plates, dumbbells and bars.')}>
       <SelectRow icon="house" iconTint="var(--blue)" title={t('Equipment here')} value={gymsOf(S).some(p => p.id === gym.equip) ? gym.equip : ''}
         onChange={v => set({ equip: v || '' })}
         options={[{ value: '', label: t('Don’t switch') }, ...gymsOf(S).map(p => ({ value: p.id, label: gymLabel(p) }))]} />

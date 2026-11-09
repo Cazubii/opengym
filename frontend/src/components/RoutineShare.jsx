@@ -67,7 +67,7 @@ function ShareRoutine({ routine, close }) {
         await shareAsPlanFile(st, routine)
         return
       }
-      await shareLink(link.url, t('Here’s my {0} on openGym 💪', name), name)
+      await shareLink(link.url, t('Here’s my {0} on GymClick 💪', name), name)
     } catch {
       setBusy(false)
       toast(t('Couldn’t make a link for this one.'))
@@ -76,7 +76,7 @@ function ShareRoutine({ routine, close }) {
   return <>
     <h3>{t('Share with a friend')}</h3>
     <div className="dim small" style={{ marginBottom: 14, lineHeight: 1.4 }}>
-      {t('A link to “{0}”. Your friend taps it and adds it to their own openGym. The routine rides inside the link, no server in between.', name)}
+      {t('A link to “{0}”. Your friend taps it and adds it to their own GymClick. The routine rides inside the link, no server in between.', name)}
     </div>
     <div className="row between" style={{ padding: '10px 2px', borderTop: '1px solid var(--sep)', gap: 12 }}>
       <div><div className="tt" style={{ fontSize: 'var(--fs-subhead)' }}>{t('Include my weights')}</div><div className="small dim">{t('Off: just sets, reps and rest. They pick their own weights.')}</div></div>
@@ -140,8 +140,8 @@ function RoutinePreview({ parsed, close }) {
 }
 
 const LINK_ERRORS = {
-  'too-new': () => t('This link is from a newer openGym. Update the app to open it.'),
-  'no-inflate': () => t('This browser can’t open this link. Try it in the openGym app.'),
+  'too-new': () => t('This link is from a newer GymClick. Update the app to open it.'),
+  'no-inflate': () => t('This browser can’t open this link. Try it in the GymClick app.'),
   empty: () => t('Nothing in this routine works here, sorry.'),
 }
 

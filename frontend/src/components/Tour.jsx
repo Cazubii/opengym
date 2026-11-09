@@ -114,7 +114,7 @@ const COPY = {
   'b-import': () => [t('Restore a backup'), t('Pick a backup file and it’s all back.')],
   'b-apps': () => [t('Moving in?'), t('Strong, Hevy, FitNotes, GymMane or Apple Health body weight: import their export here.')],
   'b-up2': () => [t('One more'), t('Syncing lives under your account. Tap back to Settings.')],
-  'b-sync': () => [t('Your own server'), t('Syncing your devices through your own openGym server lives under your account. No server? Everything still works on this device.')],
+  'b-sync': () => [t('Your own server'), t('Syncing your devices through your own GymClick server lives under your account. No server? Everything still works on this device.')],
   'b-done': () => [t('That’s the lot'), t('Your data, your call. Back it up now and then, future you will be grateful.')],
 }
 

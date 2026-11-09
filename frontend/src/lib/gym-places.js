@@ -23,7 +23,7 @@ import { nativeFetch } from './capacitor-fetch.js'
 
 export const NOMINATIM = 'https://nominatim.openstreetmap.org/search'
 export const PHOTON = 'https://photon.komoot.io'
-export const USER_AGENT = 'openGym/' + (typeof __APP_VERSION__ === 'string' ? __APP_VERSION__ : 'dev') + ' (gym reminder; +https://opengym.ch)'
+export const USER_AGENT = 'GymClick/' + (typeof __APP_VERSION__ === 'string' ? __APP_VERSION__ : 'dev') + ' (gym reminder; +https://opengym.ch)'
 export const TILES = Object.freeze({
   url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
   maxZoom: 19,

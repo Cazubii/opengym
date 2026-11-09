@@ -16,7 +16,8 @@
 // A grey goes further, so it never looks like a switched-off button (THEMES below, accent.test.js).
 import { ACCENTS, ACCENT_INK } from './format.js'
 
-export const DEFAULT_ACCENT = 'lime'
+// GymClick: orange, BezierClick's brand colour (openGym defaults to lime).
+export const DEFAULT_ACCENT = 'orange'
 export const CUSTOM = 'custom'
 
 const HEX = /^#[0-9a-f]{6}$/i

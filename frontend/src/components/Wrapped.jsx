@@ -1,4 +1,4 @@
-// "Your year in openGym": the year as full-screen stories, tap or swipe through, every card a
+// "Your year in GymClick": the year as full-screen stories, tap or swipe through, every card a
 // picture to share. Loaded only when opened (App.jsx), so the rest of the year it costs nothing.
 // The numbers come from lib/wrapped.js, the words from lib/wrapped-cards.js, the pictures are
 // drawn on the device by the same layout (components/ShareCard.jsx). Nothing is sent anywhere.
@@ -172,12 +172,12 @@ export default function Wrapped() {
   const share = c => {
     const body = S.body
     useUI.getState().openSheet(closeSheet => <ShareCardSheet title={t('Share this card')} close={closeSheet} toast={m => useUI.getState().toast(m)}
-      name={`opengym-${year}-${c.id}.png`} shareTitle={t('Your {0} in openGym', String(year))}
+      name={`opengym-${year}-${c.id}.png`} shareTitle={t('Your {0} in GymClick', String(year))}
       render={pref => wrappedCardImage(c, { ...pref, year, body })} />)
   }
   const hideBody = () => update(s => { s.wrappedBody = false })
   const last = idx === cards.length - 1
-  return <div className={'wrapped' + (still ? ' still' : '')} ref={root} role="dialog" aria-modal="true" aria-label={t('Your {0} in openGym', String(year))}>
+  return <div className={'wrapped' + (still ? ' still' : '')} ref={root} role="dialog" aria-modal="true" aria-label={t('Your {0} in GymClick', String(year))}>
     <div className="wr-glow" aria-hidden="true"><i /><i /><i /></div>
     <div className="wr-top">
       <div className="wr-progress" aria-hidden="true">

@@ -1,6 +1,6 @@
 // The watch relay, the page's side (docs/ZEPP_OS.md). A Zepp OS watch talks to the phone through a
-// Side Service that runs inside the Zepp app, never inside openGym, so the two meet on the user's
-// own openGym server instead: the page leaves its snapshot there and picks up what the watch sent
+// Side Service that runs inside the Zepp app, never inside GymClick, so the two meet on the user's
+// own GymClick server instead: the page leaves its snapshot there and picks up what the watch sent
 // (api/watch-relay.js, the /api/watch/* routes). This is a WatchBridge with the native plugin's
 // calls, so lib/watch-sync.js runs the very same sync over it (startLinkSync): the same snapshot,
 // the same events, applied through the same actions.
@@ -25,7 +25,7 @@ export async function relayLinks (call = api) {
   const r = await call('/api/watch/links')
   return Array.isArray(r?.links) ? r.links : []
 }
-/** A code for the Zepp app's openGym settings page: { code, exp }. */
+/** A code for the Zepp app's GymClick settings page: { code, exp }. */
 export async function relayPairCode (call = api) {
   const r = await call('/api/watch/pair', { method: 'POST', body: '{}' })
   return { code: String(r?.code || ''), exp: Number(r?.exp) || 0 }

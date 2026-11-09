@@ -199,7 +199,7 @@ function parseLiftosaurJson(o, opts) {
 
 /* ------------------------------------------------------ Liftoscript plans -- */
 // A Liftosaur program is Liftoscript text per day (llms/liftoscript.md in the Liftosaur repo):
-// "Name / 3x8 / 60kg / progress: lp(5lb)", one exercise a line. openGym reads the plain part
+// "Name / 3x8 / 60kg / progress: lp(5lb)", one exercise a line. GymClick reads the plain part
 // (sets, reps, a weight, a set timer, warm-ups, supersets) and keeps the progression as a note
 // on the exercise. It never runs the script.
 
@@ -291,7 +291,7 @@ export function liftoscriptDay(text, { unit = 'kg', resolve, templates = new Map
       if (new Set(reps).size > 1 && reps.length <= 10) cfg.pyramid = reps
     }
     if (merged.warmup != null) cfg.warmupSets = Math.min(5, merged.warmup)
-    // What openGym cannot run comes along as the exercise's note: the progression, and a scheme
+    // What GymClick cannot run comes along as the exercise's note: the progression, and a scheme
     // the plain numbers above leave something out of (a range, an AMRAP set, a weight in % or RPE).
     const exact = !merged.pct && sets.every(s => !s.pct && !s.hi && !s.amrap)
     const note = [exact ? '' : merged.scheme, ...merged.script].filter(Boolean).join(' / ')

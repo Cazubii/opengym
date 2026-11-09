@@ -234,7 +234,7 @@ describe('semver comparison (via checkForUpdate behavior)', () => {
 describe('pickApk: Standard and HD APKs', () => {
   const url = n => `https://github.com/DuarteSantos8/openGym/releases/download/v1.4.2/${n}`
   const a = n => ({ name: n, browser_download_url: url(n) })
-  const RELEASE = ['openGym-1.4.2.apk', 'openGym-1.4.2.apk.sha256', 'openGym-HD-1.4.2.apk', 'openGym-HD-1.4.2.apk.sha256'].map(a)
+  const RELEASE = ['openGym-1.4.2.apk', 'openGym-1.4.2.apk.sha256', 'GymClick-HD-1.4.2.apk', 'GymClick-HD-1.4.2.apk.sha256'].map(a)
 
   it('a test build without a variant is the Standard APK', () => {
     expect(APK_VARIANT).toBe('standard')
@@ -249,8 +249,8 @@ describe('pickApk: Standard and HD APKs', () => {
   it('the HD APK updates to the HD APK and its own checksum, whatever the order', () => {
     for (const list of [RELEASE, [...RELEASE].reverse()]) {
       const { apk, hash } = pickApk(list, 'hd')
-      expect(apk.name).toBe('openGym-HD-1.4.2.apk')
-      expect(hash.name).toBe('openGym-HD-1.4.2.apk.sha256')
+      expect(apk.name).toBe('GymClick-HD-1.4.2.apk')
+      expect(hash.name).toBe('GymClick-HD-1.4.2.apk.sha256')
     }
   })
 
@@ -272,11 +272,11 @@ describe('pickApk: Standard and HD APKs', () => {
   })
 
   it('names that only contain the letters hd are not HD', () => {
-    expect(pickApk([a('openGym-shdw-1.4.2.apk')], 'standard').apk.name).toBe('openGym-shdw-1.4.2.apk')
+    expect(pickApk([a('GymClick-shdw-1.4.2.apk')], 'standard').apk.name).toBe('GymClick-shdw-1.4.2.apk')
   })
 
   it('a checksum that belongs to another APK is not used', () => {
-    const { apk, hash } = pickApk(['openGym-HD-1.4.2.apk.sha256', 'openGym-1.4.2.apk'].map(a), 'standard')
+    const { apk, hash } = pickApk(['GymClick-HD-1.4.2.apk.sha256', 'openGym-1.4.2.apk'].map(a), 'standard')
     expect(apk.name).toBe('openGym-1.4.2.apk')
     expect(hash).toBe(null)
   })
@@ -284,21 +284,21 @@ describe('pickApk: Standard and HD APKs', () => {
 
 describe('pickApk: Standard, Plus and HD', () => {
   const a = n => ({ name: n, browser_download_url: `https://github.com/DuarteSantos8/openGym/releases/download/v1.4.2/${n}` })
-  const NAMES = ['openGym-1.4.2.apk', 'openGym-1.4.2.apk.sha256', 'openGym-HD-1.4.2.apk', 'openGym-HD-1.4.2.apk.sha256',
-    'openGym-Plus-1.4.2.apk', 'openGym-Plus-1.4.2.apk.sha256']
+  const NAMES = ['openGym-1.4.2.apk', 'openGym-1.4.2.apk.sha256', 'GymClick-HD-1.4.2.apk', 'GymClick-HD-1.4.2.apk.sha256',
+    'GymClick-Plus-1.4.2.apk', 'GymClick-Plus-1.4.2.apk.sha256']
   const sorted = [...NAMES].sort().map(a)  // GitHub lists assets by name
 
   it('names the three kinds', () => {
     expect(apkKind('openGym-1.4.2.apk')).toBe('standard')
-    expect(apkKind('openGym-Plus-1.4.2.apk')).toBe('plus')
-    expect(apkKind('openGym-HD-1.4.2.apk')).toBe('hd')
+    expect(apkKind('GymClick-Plus-1.4.2.apk')).toBe('plus')
+    expect(apkKind('GymClick-HD-1.4.2.apk')).toBe('hd')
     expect(apkKind('openGym-1.5.0-plus.apk')).toBe('plus')
-    expect(apkKind('openGym-surplus-1.4.2.apk')).toBe('standard')
+    expect(apkKind('GymClick-surplus-1.4.2.apk')).toBe('standard')
   })
 
   it('each kind updates only to itself, with its own checksum, in any order', () => {
     for (const list of [sorted, [...sorted].reverse()]) {
-      for (const [variant, name] of [['standard', 'openGym-1.4.2.apk'], ['plus', 'openGym-Plus-1.4.2.apk'], ['hd', 'openGym-HD-1.4.2.apk']]) {
+      for (const [variant, name] of [['standard', 'openGym-1.4.2.apk'], ['plus', 'GymClick-Plus-1.4.2.apk'], ['hd', 'GymClick-HD-1.4.2.apk']]) {
         const { apk, hash } = pickApk(list, variant)
         expect(apk.name).toBe(name)
         expect(hash.name).toBe(`${name}.sha256`)
@@ -312,6 +312,6 @@ describe('pickApk: Standard, Plus and HD', () => {
   })
 
   it('a Plus build is not moved to another kind when a release has no Plus APK', () => {
-    expect(pickApk(['openGym-1.4.3.apk', 'openGym-HD-1.4.3.apk'].map(a), 'plus').apk).toBe(null)
+    expect(pickApk(['openGym-1.4.3.apk', 'GymClick-HD-1.4.3.apk'].map(a), 'plus').apk).toBe(null)
   })
 })

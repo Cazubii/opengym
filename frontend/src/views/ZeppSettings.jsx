@@ -1,6 +1,6 @@
 // Settings → Zepp OS watch (signed in to a server): pairing an Amazfit or other Zepp OS watch, and
-// the watches paired. The watch's Side Service lives in the Zepp app, so it reaches openGym through
-// this server (lib/watch-relay.js, docs/ZEPP_OS.md): the code below goes into the openGym watch
+// the watches paired. The watch's Side Service lives in the Zepp app, so it reaches GymClick through
+// this server (lib/watch-relay.js, docs/ZEPP_OS.md): the code below goes into the GymClick watch
 // app's settings page in the Zepp app, with the server's address.
 import { useEffect, useState } from 'react'
 import { t } from '../lib/i18n.js'
@@ -53,10 +53,10 @@ export default function ZeppSettingsPage ({ api = { relayLinks, relayPairCode, r
   const address = serverAddress()
 
   return <>
-    <Section footer={err || t('Amazfit and other Zepp OS watches talk to openGym through this server. Pair one and your workouts show up on your wrist.')}>
+    <Section footer={err || t('Amazfit and other Zepp OS watches talk to GymClick through this server. Pair one and your workouts show up on your wrist.')}>
       <Row icon="watch" iconTint="var(--orange)" title={t('Pair a watch')} accessory="chevron" onClick={busy ? undefined : newCode} />
     </Section>
-    {pair && <Section title={t('Pairing code')} footer={t('In the Zepp app, open the openGym watch app’s settings and type in this address and code. The code lasts ten minutes.')}>
+    {pair && <Section title={t('Pairing code')} footer={t('In the Zepp app, open the GymClick watch app’s settings and type in this address and code. The code lasts ten minutes.')}>
       <Row icon="globe" iconTint="var(--blue)" title={t('Server address')} subtitle={address} />
       <Row icon="key" iconTint="var(--green)" title={t('Pairing code')}>
         <span className="lrow-v" style={{ fontSize: 22, fontWeight: 700, fontVariantNumeric: 'tabular-nums', letterSpacing: '0.04em' }} data-testid="zepp-code">{pair.code}</span>

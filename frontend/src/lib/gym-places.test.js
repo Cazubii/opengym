@@ -68,7 +68,7 @@ describe('the search', () => {
     expect(url).toMatch(/^https:\/\/nominatim\.openstreetmap\.org\/search\?format=jsonv2&addressdetails=1&limit=8&q=Iron%20Temple&accept-language=de/)
     expect(url).toContain('&viewbox=8.3400,47.5700,8.7400,47.1700')
     expect(url).not.toContain('bounded=1')
-    expect(init.headers['User-Agent']).toMatch(/^openGym\/.+opengym\.ch/)
+    expect(init.headers['User-Agent']).toMatch(/^GymClick\/.+opengym\.ch/)
   })
   it('an empty question asks nobody', async () => {
     expect(await search('   ')).toEqual([])
@@ -160,7 +160,7 @@ describe('the type-ahead', () => {
     const r = await suggest('  Iron   Temple ', { near: { lat: 47.37, lng: 8.54 } })
     const [url, init] = fetcher.mock.calls[0]
     expect(url).toBe('https://photon.komoot.io/api/?q=Iron%20Temple&limit=10&lang=de&lat=47.370&lon=8.540')
-    expect(init.headers['User-Agent']).toMatch(/^openGym\/.+opengym\.ch/)
+    expect(init.headers['User-Agent']).toMatch(/^GymClick\/.+opengym\.ch/)
     expect(r.map(p => p.name)).toEqual(['Iron Temple', 'Far Gym'])
   })
   it('a language Photon refuses is left out (the names on the spot then)', async () => {

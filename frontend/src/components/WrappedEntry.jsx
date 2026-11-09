@@ -15,13 +15,13 @@ import CardHead from './CardHead.jsx'
 
 const Wrapped = lazy(() => import('./Wrapped.jsx'))
 
-/** Home, from Dec 1 to Jan 31: "Your 2026 in openGym is ready", until it is opened or put away. */
+/** Home, from Dec 1 to Jan 31: "Your 2026 in GymClick is ready", until it is opened or put away. */
 export function WrappedHomeCard({ S }) {
   const update = useStore(s => s.update)
   const year = homeCardYear(S, wrappedNow())
   if (!year) return null
   return <div className="card wr-home" data-wrapped-home>
-    <CardHead icon="sparkles" eyebrow={t('Your year in openGym')} title={t('Your {0} in openGym is ready 🎉', String(year))}
+    <CardHead icon="sparkles" eyebrow={t('Your year in GymClick')} title={t('Your {0} in GymClick is ready 🎉', String(year))}
       sub={t('Workouts, records and one very honest personality test. Tap to see your year.')}
       action={<button type="button" className="iconbtn wr-x" aria-label={t('Not now')} onClick={() => update(s => { s.wrapped = withYear(s, 'dismissed', year) })}><Icon name="xmark" /></button>} />
     <Button variant="primary" icon="sparkles" onClick={() => openWrapped(year)}>{t('Show me my year')}</Button>

@@ -1,5 +1,5 @@
 // @vitest-environment happy-dom
-// openGym's own date field and picker (#809): ISO in, ISO out, min/max respected, today one tap
+// GymClick's own date field and picker (#809): ISO in, ISO out, min/max respected, today one tap
 // away, months and years reachable, the profile's first weekday, and the labels a screen reader
 // reads out.
 import { describe, expect, it, beforeEach, afterEach, vi } from 'vitest'

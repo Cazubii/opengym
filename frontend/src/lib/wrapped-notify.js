@@ -1,4 +1,4 @@
-// The one December notification on the phones (Your year in openGym, lib/wrapped.js): a local
+// The one December notification on the phones (Your year in GymClick, lib/wrapped.js): a local
 // notification the app plans for itself, Dec 1 at 18:00 on the phone's clock, the next time it is
 // opened before then. No server is involved, so it works the same with or without one. The app
 // never asks for permission for it: with notifications off there is the Home card and nothing else.

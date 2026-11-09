@@ -38,7 +38,7 @@ const errorText = code => ({
   'read-only': t('This sticker is locked. Try a blank one.'),
   'too-small': t('This sticker is too small. NTAG213 or bigger works.'),
   disabled: t('NFC is off. Turn it on in your phone’s settings and try again.'),
-  denied: t('openGym isn’t allowed to use NFC here.'),
+  denied: t('GymClick isn’t allowed to use NFC here.'),
   unsupported: t('This sticker can’t hold a link. Try an NTAG sticker.'),
 }[code] || t('That didn’t work. Hold your phone still on the sticker and try again.'))
 

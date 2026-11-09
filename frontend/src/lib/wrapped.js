@@ -1,4 +1,4 @@
-// "Your year in openGym" (v1.4.5): a look back at one calendar year, story by story.
+// "Your year in GymClick" (v1.4.5): a look back at one calendar year, story by story.
 //
 // This file is the engine and the calendar, nothing more: what the year holds (yearStats), which
 // years can be looked back on (wrappedYears), when the season is on (Dec 1 to Jan 31), whether

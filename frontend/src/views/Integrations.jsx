@@ -19,7 +19,7 @@ import EmptyState from '../components/EmptyState.jsx'
 import { Section, Row, Switch, Button, TextField } from '../components/ui.jsx'
 import { isOn } from '../lib/modules.js'
 
-/* Settings → Integrations (v1.4.4): one directory of what openGym can talk to, grouped, each card
+/* Settings → Integrations (v1.4.4): one directory of what GymClick can talk to, grouped, each card
    with what it is, whether it is on, and the one thing to do next. The cards are thin on purpose:
    Apple Health and Health Connect keep their switches on their own page, the imports and the CSV
    export open the sheets Data & backup has always opened, the Coach its own setup. Only the
@@ -131,19 +131,19 @@ export default function IntegrationsPage({ android = false, ios = false }) {
     const { action, status } = card.state
     switch (card.id) {
       case 'apple-health': case 'health-connect':
-        if (status === 'device') return infoSheet(card, t('This one lives in the openGym phone app: Apple Health on iPhone, Health Connect on Android.'))
+        if (status === 'device') return infoSheet(card, t('This one lives in the GymClick phone app: Apple Health on iPhone, Health Connect on Android.'))
         return nav('/settings/' + card.id)
       case 'hevy': return importFromHevy()
       case 'files': return fileRef.current?.click()
       case 'csv': return csvExportSheet()
       case 'webhook':
-        if (status === 'server') return infoSheet(card, t('Webhooks are sent by your own openGym server, so they need one. Connect this device to it in Account.'))
+        if (status === 'server') return infoSheet(card, t('Webhooks are sent by your own GymClick server, so they need one. Connect this device to it in Account.'))
         if (action === 'open') return infoSheet(card, t('Webhooks are off on this server. Add INTEGRATIONS=webhook to its .env and restart it.'), INTEGRATIONS_DOCS)
         if (action === 'connect') return addWebhookSheet(webhookCtx)
         return webhookListSheet(webhookCtx)
       case 'coach': return nav(MOBILE ? '/coach/setup' : '/coach')
       case 'mcp':
-        if (status === 'server') return infoSheet(card, t('The MCP server runs next to your own openGym server and reads your data there.'), MCP_DOCS)
+        if (status === 'server') return infoSheet(card, t('The MCP server runs next to your own GymClick server and reads your data there.'), MCP_DOCS)
         return window.open(MCP_DOCS, '_blank', 'noopener')
       default:
     }
@@ -178,7 +178,7 @@ function disconnectHealth(card, toast) {
   const where = card.name
   menuSheet({
     title: t('Disconnect {0}?', where),
-    subtitle: t('openGym stops writing and reading. What it already wrote can stay there as your data, or go.'),
+    subtitle: t('GymClick stops writing and reading. What it already wrote can stay there as your data, or go.'),
     items: [
       { icon: 'check', label: t('Stop, keep what it wrote'), onClick: () => offAll(false, toast) },
       { icon: 'trash', label: t('Stop and remove what it wrote'), danger: true, onClick: () => offAll(true, toast) },
@@ -198,8 +198,8 @@ async function offAll(removeWritten, toast) {
 function WorksWith({ platform, nav }) {
   const store = platform === 'ios' ? 'Apple Health' : platform === 'android' ? 'Health Connect' : null
   return <Section title={t('Works with')} footer={store
-    ? t('No extra connection needed: they write to {0}, and openGym reads from there.', store)
-    : t('No extra connection needed: they write to Apple Health or Health Connect, and the openGym phone app reads from there.')}>
+    ? t('No extra connection needed: they write to {0}, and GymClick reads from there.', store)
+    : t('No extra connection needed: they write to Apple Health or Health Connect, and the GymClick phone app reads from there.')}>
     <div className="intg-chips">
       {WORKS_WITH.map(w => <button key={w.name} className="btn xs intg-chip" onClick={() => worksWithSheet(w, platform, nav)}>
         <Icon name={w.glyph} /><span translate="no">{w.name}</span>
@@ -218,17 +218,17 @@ function worksWithSheet(w, platform, nav) {
   const store = platform === 'ios' ? 'apple-health' : platform === 'android' ? 'health-connect' : null
   sheet(close => <>
     <SheetHead icon={w.glyph} title={w.name} />
-    <p className="intg-lead">{t('{0} has no direct line to openGym, and it does not need one.', w.name)}</p>
+    <p className="intg-lead">{t('{0} has no direct line to GymClick, and it does not need one.', w.name)}</p>
     {/* Three facts, not three settings: plain rows, no tinted tile on each (Integrations pass, I6). */}
     <Section className="intg-facts">
       <Row title={t('How it gets here')}
-        subtitle={t('{0} saves to Apple Health on iPhone or Health Connect on Android. openGym reads from there.', w.name)} />
-      <Row title={t('What openGym reads')} subtitle={t(READS[w.reads])} />
-      <Row title={t('What it does not do')} subtitle={t('Workouts logged in openGym go to the health store, not back into {0} itself.', w.name)} />
+        subtitle={t('{0} saves to Apple Health on iPhone or Health Connect on Android. GymClick reads from there.', w.name)} />
+      <Row title={t('What GymClick reads')} subtitle={t(READS[w.reads])} />
+      <Row title={t('What it does not do')} subtitle={t('Workouts logged in GymClick go to the health store, not back into {0} itself.', w.name)} />
     </Section>
     {store
       ? <Button variant="primary" onClick={() => { close(); nav('/settings/' + store) }}>{t('Set up {0}', CARD[store].name)}</Button>
-      : <p className="intg-note">{t('Install the openGym app on your phone to use this.')}</p>}
+      : <p className="intg-note">{t('Install the GymClick app on your phone to use this.')}</p>}
   </>)
 }
 
@@ -261,7 +261,7 @@ function detailSheet(card, { act, health, onDisconnect, retry }) {
       </Section>
       {health && <Section>
         <Row icon="clock" iconTint="var(--blue)" title={t('Last sync')} value={health.at ? fmtAgo(health.at) : t('Not yet')} />
-        {trouble && <Row icon="warning" iconTint="var(--orange)" title={t('Permission withdrawn')} subtitle={t('openGym can no longer reach it.')}>
+        {trouble && <Row icon="warning" iconTint="var(--orange)" title={t('Permission withdrawn')} subtitle={t('GymClick can no longer reach it.')}>
           <button className="btn xs tinted" onClick={go(retry)}>{t('Retry')}</button>
         </Row>}
       </Section>}

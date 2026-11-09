@@ -1,6 +1,6 @@
 import { memo } from 'react'
 
-// openGym icon set — hand-drawn on a 24×24 grid, stroke-based, single weight.
+// GymClick icon set — hand-drawn on a 24×24 grid, stroke-based, single weight.
 //
 // Everything is one <svg> primitive with `currentColor`, so an icon inherits the
 // text colour and optical size of whatever it sits in. No emoji anywhere in the
@@ -197,7 +197,7 @@ const P = {
   fingerprint: <><path d="M5.2 9.2a7.8 7.8 0 0 1 13.6 0" /><path d="M4.8 14.4v-1.2a7.2 7.2 0 0 1 .4-2.4M18.8 9.2a7.6 7.6 0 0 1 .4 2.6v3" /><path d="M8.6 20a9.6 9.6 0 0 1-1.2-4.6v-2.2a4.6 4.6 0 0 1 9.2 0v1.6" /><path d="M12 13v2.6a9.4 9.4 0 0 0 1.6 5" /><path d="M16.6 18.2v.6c0 .6.1 1.2.2 1.6" /></>,
   // how a message sounds (the nudge tone)
   // Settings → Integrations (v1.4.4): a plug for the page, three linked nodes for webhooks, and a
-  // ring for the "works with" list (smart rings). Drawn for openGym, nobody's logo.
+  // ring for the "works with" list (smart rings). Drawn for GymClick, nobody's logo.
   plug: <><path d="M9.2 3.6v4M14.8 3.6v4" /><path d="M6.6 7.6h10.8v3a5.4 5.4 0 0 1-10.8 0Z" /><path d="M12 16v4.4" /></>,
   webhook: <><circle cx="12" cy="6.4" r="2.6" /><circle cx="6.2" cy="16.8" r="2.6" /><circle cx="17.8" cy="16.8" r="2.6" /><path d="M10.7 8.7 7.5 14.5M13.3 8.7l3.2 5.8M8.8 16.8h6.4" /></>,
   ring: <><circle cx="12" cy="13.8" r="6.4" /><path d="m9.7 5.4 2.3-1.8 2.3 1.8-2.3 1.8Z" /></>,

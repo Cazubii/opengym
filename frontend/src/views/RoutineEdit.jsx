@@ -589,7 +589,7 @@ export default function RoutineEdit() {
         update(s => { s.routines.push(copy) })
         nav('/plan/r/' + copy.id)
       }}><Icon name="copy" className="re-act-i" /><span className="lrow-m"><span className="lrow-t">{t('Copy routine')}</span></span></button>
-      {/* A link a friend taps to add this routine to their own openGym (components/RoutineShare.jsx). */}
+      {/* A link a friend taps to add this routine to their own GymClick (components/RoutineShare.jsx). */}
       <button type="button" className="lrow tap" disabled={!r.ex.length} onClick={() => shareRoutineSheet(r)}><Icon name="share" className="re-act-i" /><span className="lrow-m"><span className="lrow-t">{t('Share with a friend')}</span></span></button>
       <button type="button" className="lrow tap" disabled={!r.ex.length} onClick={printRoutine}><Icon name="download" className="re-act-i" /><span className="lrow-m"><span className="lrow-t">{t('Print / Save as PDF')}</span></span></button>
     </div>

@@ -1,4 +1,4 @@
-// "Your year in openGym": the year's numbers (lib/wrapped.js yearStats) as story cards, and each
+// "Your year in GymClick": the year's numbers (lib/wrapped.js yearStats) as story cards, and each
 // card as a picture to share. The same model feeds the full-screen stories (components/Wrapped.jsx)
 // and the canvas, so what is shared is what was shown:
 //   wrappedCards       — the cards, in order, as words: a card with nothing to say is left out
@@ -92,7 +92,7 @@ export function wrappedCards(st, S) {
   const personality = personalityOf(st)
   const [pName, pLine] = PERSONALITY[personality]()
 
-  cards.push({ id: 'intro', kicker: t('Your year in openGym'), big: String(y), bigKind: 'number', title: t('Grab a shake. This one is all about you.'), lines: [t('Tap to start')] })
+  cards.push({ id: 'intro', kicker: t('Your year in GymClick'), big: String(y), bigKind: 'number', title: t('Grab a shake. This one is all about you.'), lines: [t('Tap to start')] })
 
   const perWeek = st.perWeek
   cards.push({
@@ -189,7 +189,7 @@ export function wrappedCards(st, S) {
     ...(st.topExercise ? [{ label: t('Signature move'), value: exName(st.topExercise.id, st.topExercise.name), wide: true }] : []),
     { label: t('Training personality'), value: pName, wide: true },
   ]
-  cards.push({ id: 'summary', kicker: t('Your {0} in openGym', String(y)), big: '', bigKind: 'none', title: t('That is a wrap. See you in {0}.', String(y + 1)), lines: [], tiles })
+  cards.push({ id: 'summary', kicker: t('Your {0} in GymClick', String(y)), big: '', bigKind: 'none', title: t('That is a wrap. See you in {0}.', String(y + 1)), lines: [], tiles })
   return cards
 }
 

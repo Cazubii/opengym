@@ -170,7 +170,7 @@ describe('weigh-ins', () => {
   })
 
   // #859: the scale's weigh-in joins the typed one at its own time; the typed one is not touched.
-  it('keeps a weigh-in typed into openGym that day, the scale\'s beside it', async () => {
+  it('keeps a weigh-in typed into GymClick that day, the scale\'s beside it', async () => {
     S.bodyweight = [{ d: '2026-10-15', w: 82, t: NOW - 10 * 3600e3 }]
     h.weights = [rec(2, 80.4)]
     await hs.enableRead('weight', getState, { apply })

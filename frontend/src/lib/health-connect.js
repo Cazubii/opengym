@@ -4,7 +4,7 @@
 //
 // Write-only, and only on request: the user turns it on in Settings, on each phone. Every record
 // carries a client id of its own (a workout's id, a weigh-in's day), so writing it again replaces
-// it instead of adding a second one, and anything openGym wrote can be found and removed again.
+// it instead of adding a second one, and anything GymClick wrote can be found and removed again.
 import { workoutText } from './workout-text.js'
 import { modeForEntry, hasCompletedWork } from './workout-model.js'
 import { isoOf } from './format.js'
@@ -134,7 +134,7 @@ export function weightRecord(b, unit, r = null) {
   return { id: weightRecordId(b.d, r?.id), time, kg: Math.round(kg * 1000) / 1000 }
 }
 
-/** The hub's id of one weigh-in openGym wrote: its day, and its reading unless that is '0'. */
+/** The hub's id of one weigh-in GymClick wrote: its day, and its reading unless that is '0'. */
 export const weightRecordId = (d, rid) => 'opengym-bw-' + d + (rid != null && String(rid) !== '0' ? '-' + rid : '')
 
 function localMorning(iso) {
@@ -174,7 +174,7 @@ export function recordKey(rec) {
 }
 
 /**
- * The record ids openGym has on record as deleted: a workout or a weigh-in day removed on this
+ * The record ids GymClick has on record as deleted: a workout or a weigh-in day removed on this
  * device or on another one whose removal synced in (S.deleted, lib/sync-merge.js stampDeletions;
  * a negative stamp is an add-back), and everything a "Reset everything" wiped (S.resetIds).
  * Only these are taken out of Health: a copy that merely lacks a workout (signed out, a guest
@@ -201,7 +201,7 @@ export function goneIds(S) {
 /**
  * What a sync has to do, given the records now and `written`, what this phone wrote before
  * ({ [id]: { k: 'session' | 'weight', h: recordKey } }). New and changed records are written,
- * records that are gone from openGym (a deleted workout, a removed weigh-in) are removed.
+ * records that are gone from GymClick (a deleted workout, a removed weigh-in) are removed.
  * With `gone` (goneIds), only a record on record as deleted is removed; one that is merely
  * missing stays written, and goes once its deletion arrives. Returns { sessions, weights,
  * remove: { sessions: [id], weights: [id] }, written } — `written` being what the phone has
@@ -234,7 +234,7 @@ export function planSync({ sessions, weights }, written = {}, gone = null) {
 // day ('opengym-bw-<day>-<reading>' under that day's 'opengym-bw-<day>-*').
 const isGone = (gone, id) => gone.has(id) || (/^opengym-bw-\d{4}-\d{2}-\d{2}-/.test(id) && gone.has(id.slice(0, 21) + '-*'))
 
-/** Every record this phone wrote, by type — what "remove what openGym wrote" takes away. */
+/** Every record this phone wrote, by type — what "remove what GymClick wrote" takes away. */
 export function writtenIds(written = {}) {
   const out = { sessions: [], weights: [] }
   for (const [id, was] of Object.entries(written || {})) {

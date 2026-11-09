@@ -85,7 +85,7 @@ describe('log a past workout', () => {
     logPastWorkoutSheet()
     const host = mountTopSheet()
     const fields = [...host.querySelectorAll('.lrow .timef')]
-    // the date is openGym's own field now (#809), the time is still the system one
+    // the date is GymClick's own field now (#809), the time is still the system one
     expect(fields.map(i => i.tagName + (i.type ? ':' + i.type : ''))).toEqual(['BUTTON:button', 'INPUT:time'])
     for (const field of fields) expect(field.closest('.lrow').querySelectorAll('.lrow-v')).toHaveLength(0)
     const rule = cssSource.match(/^\.lrow-m\{([^}]*)\}/m)
