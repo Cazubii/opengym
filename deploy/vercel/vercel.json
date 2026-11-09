@@ -3,7 +3,7 @@
   "framework": null,
   "regions": ["iad1"],
   "installCommand": "npm install && (cd ../../api && npm ci --omit=optional) && (cd ../../frontend && npm ci --ignore-scripts)",
-  "buildCommand": "(cd ../../frontend && npm run build) && rm -rf public && cp -r ../../frontend/dist public && mkdir -p public/exercise-media && cp -r ../../catalogue/media/. public/exercise-media/",
+  "buildCommand": "(cd ../../frontend && npm run build) && rm -rf public && cp -r ../../frontend/dist public && mkdir -p public/exercise-media && cp -r ../../catalogue/media/. public/exercise-media/ && node brand.mjs",
   "outputDirectory": "public",
   "functions": {
     "api/index.js": { "maxDuration": 60, "includeFiles": "../../api/**" }
