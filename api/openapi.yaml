@@ -178,6 +178,11 @@ tags:
     description: >-
       AI Coach: plans, reviews and debriefs. Every route here answers 503 unless the
       instance has the Coach switched on and a provider connected.
+  - name: community
+    description: >-
+      The community: a unique @handle per profile, follow requests the followed person
+      approves, and a read-only view of an approved person's workouts (exercises, sets,
+      reps, loads, volume). Never their body weight, measurements, photos, notes or settings.
   - name: integrations
     description: >-
       Settings → Integrations: outbound webhooks now, more providers later. Off unless the
@@ -3824,6 +3829,141 @@ paths:
         '401': { $ref: '#/components/responses/Unauthorized' }
         '403': { $ref: '#/components/responses/Forbidden' }
 
+  /api/community/me:
+    get:
+      tags: [community]
+      operationId: communityMe
+      summary: Your handle, followers, following and requests
+      description: >-
+        The signed-in profile in the community, with pending requests to answer.
+      responses:
+        '200': { description: OK }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /api/community/handle:
+    post:
+      tags: [community]
+      operationId: setHandle
+      summary: Pick or change your @handle
+      description: >-
+        3 to 20 lowercase letters, digits, dot or underscore. 400 handle-invalid, 409 handle-taken.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                handle: { type: string }
+      responses:
+        '200': { description: OK }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /api/community/search:
+    get:
+      tags: [community]
+      operationId: searchPeople
+      summary: Find people by @handle or name
+      description: >-
+        Profiles that picked a handle, with your relation to each (none, pending, accepted).
+      parameters:
+        - { name: q, in: query, required: true, schema: { type: string } }
+      responses:
+        '200': { description: OK }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /api/community/profile:
+    get:
+      tags: [community]
+      operationId: communityProfile
+      summary: A profile, and its workouts if you may see them
+      description: >-
+        Workouts are included for yourself and for profiles that approved your follow request. 404 not-found.
+      parameters:
+        - { name: handle, in: query, required: true, schema: { type: string } }
+      responses:
+        '200': { description: OK }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /api/community/follow:
+    post:
+      tags: [community]
+      operationId: follow
+      summary: Ask to follow someone
+      description: >-
+        Creates a pending request the other person approves. 409 no-handle until you pick one.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                handle: { type: string }
+      responses:
+        '200': { description: OK }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /api/community/unfollow:
+    post:
+      tags: [community]
+      operationId: unfollow
+      summary: Stop following, or take back a request
+      description: >-
+        Removes your follow of that profile, approved or pending.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                handle: { type: string }
+      responses:
+        '200': { description: OK }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /api/community/requests/answer:
+    post:
+      tags: [community]
+      operationId: answerFollowRequest
+      summary: Accept or decline a follow request
+      description: >-
+        accept true lets them see your workouts; false drops the request.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                handle: { type: string }
+                accept: { type: boolean }
+      responses:
+        '200': { description: OK }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /api/community/followers/remove:
+    post:
+      tags: [community]
+      operationId: removeFollower
+      summary: Remove a follower
+      description: >-
+        They stop seeing your workouts and would have to ask again.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                handle: { type: string }
+      responses:
+        '200': { description: OK }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /api/community/feed:
+    get:
+      tags: [community]
+      operationId: communityFeed
+      summary: Recent workouts of the people you follow
+      description: >-
+        Approved follows only, the last 30 days, newest first, at most 50.
+      responses:
+        '200': { description: OK }
+        '401': { $ref: '#/components/responses/Unauthorized' }
 components:
   securitySchemes:
     cookieAuth:

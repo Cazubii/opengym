@@ -91,6 +91,9 @@ const Stats = lazyView(() => import('./views/Stats.jsx'))
 const History = lazyView(() => import('./views/History.jsx'))
 const Library = lazyView(() => import('./views/Library.jsx'))
 const Muscles = lazyView(() => import('./views/Muscles.jsx'))
+const Community = lazyView(() => import('./views/Community.jsx'))
+const CommunityProfile = lazyView(() => import('./views/CommunityProfile.jsx'))
+const HandlePrompt = lazy(() => import('./components/HandlePrompt.jsx'))
 const SettingsRoute = lazyView(() => import('./views/Settings.jsx').then(m => ({ default: m.SettingsRoute })))
 // The app tour's overlay (components/Tour.jsx): fetched when it opens, never before.
 const Tour = lazy(() => import('./components/Tour.jsx'))
@@ -345,6 +348,8 @@ function Shell() {
       <Route path="/history" element={<History />} />
       <Route path="/library" element={<Library />} />
       <Route path="/muscles" element={<Muscles />} />
+      <Route path="/community" element={<Community />} />
+      <Route path="/u/:handle" element={<CommunityProfile />} />
       <Route path="/structural-balance" element={<StructuralBalance />} />
       {isOn(S, 'body') && <Route path="/progress-photos" element={<ProgressPhotos />} />}
       {isOn(S, 'body') && <Route path="/measurements" element={<Measurements />} />}
@@ -385,6 +390,9 @@ function Shell() {
       <Toast />
       <TimerFlash />
       {tour && authed && <Suspense fallback={null}><Tour /></Suspense>}
+      {/* No @ yet (the community, views/Community.jsx): asked once per visit, outside a workout. */}
+      {user && !user.handle && setupDone && !tour && !inWorkout && loc.pathname !== '/workout' && loc.pathname !== '/community'
+        && <Suspense fallback={null}><HandlePrompt /></Suspense>}
       {/* Seasonal decoration (lib/seasonal.js): nothing, and nothing loaded, out of season. Never
           over a running workout or the first-launch screens. */}
       {authed && !needsMobileOnboarding && !permSteps && <SeasonalLayer hidden={inWorkout || loc.pathname === '/workout'} />}

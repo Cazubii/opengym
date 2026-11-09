@@ -41,6 +41,7 @@ import { atomicWrite as durableWrite } from './durable.js';
 import { ipv6Groups, guardedLookup, pushEndpointError, MAX_PUSH_ENDPOINT } from './net-guard.js';
 import { createIntegrations } from './integrations/index.js';
 import { integrationRoutes } from './integrations/routes.js';
+import { communityRoutes, dropFollows } from './community.js';
 import { excusedOn, nudgeFor, nudgeWindowOpen, toneOf } from './nudge.js';
 import { wrappedPushYear, wrappedSummary, wrappedPushOwed, wrappedPush } from './wrapped.js';
 
@@ -1197,7 +1198,7 @@ function loginTarget(body) {
 }
 const acctKey = u => 'acct:' + u.id;
 const passkeyCount = u => db.creds.filter(c => c.userId === u.id).length;
-const publicUser = u => ({ id: u.id, name: u.name, admin: isAdmin(u), ...(isOwner(u) ? { owner: true } : {}) });
+const publicUser = u => ({ id: u.id, name: u.name, ...(u.handle ? { handle: u.handle } : {}), admin: isAdmin(u), ...(isOwner(u) ? { owner: true } : {}) });
 const POLICY_ERRORS = {
   'too-short': `the password needs at least ${MIN_LENGTH} characters`,
   'too-long': `the password can have at most ${MAX_LENGTH} characters`,
@@ -1346,6 +1347,7 @@ function removeAccount(u) {
   db.creds = (db.creds || []).filter(c => c.userId !== u.id);
   db.subs = (db.subs || []).filter(x => x.userId !== u.id);
   dropDeviceLinks(db, u.id);
+  dropFollows(db, u.id);
   dropWatchLinks(db, u.id);
   dropWatchCodes(watchCodes, u.id);
   presence.delete(u.id);
@@ -2992,6 +2994,7 @@ const routes = {
   // integrations/routes.js, handed the same helpers. With INTEGRATIONS unset they answer an empty
   // list (GET) or 404 "off", so the routes exist on every server and the app can tell.
   ...integrationRoutes({ json, readBody, readSession, hub: integrations, audit }),
+  ...communityRoutes({ json, readBody, readSession, notSignedIn, getDb: () => db, saveDb, readState: readStateCached, audit }),
 
   /* ---------- photos & videos ---------- */
   // Absent, not refusing, when MEDIA_UPLOADS=0: a 404 is what a server from before the feature
