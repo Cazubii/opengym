@@ -4,7 +4,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import { createRequire } from 'node:module';
 import { neon } from '@neondatabase/serverless';
+// web-push lives in the api's own node_modules, beside server.js.
+const apiRequire = createRequire(new URL('../../../api/server.js', import.meta.url));
 
 const DATA = process.env.DATA_DIR = process.env.DATA_DIR || '/tmp/opengym-data';
 const sql = neon(process.env.DATABASE_URL);
@@ -63,7 +66,7 @@ async function boot(reload) {
   if (!reload) {
     fs.mkdirSync(DATA, { recursive: true });
     await seedOnce('secret', () => crypto.randomBytes(32).toString('hex'));
-    const { default: webpush } = await import('web-push');
+    const webpush = apiRequire('web-push');
     await seedOnce('vapid.json', () => JSON.stringify(webpush.generateVAPIDKeys()));
     await pull();
   }
