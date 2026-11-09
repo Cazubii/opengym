@@ -16,13 +16,23 @@ html = html.replace('</head>', override + '\n</head>');
 fs.writeFileSync('public/index.html', html);
 fs.writeFileSync('public/manifest.json', fs.readFileSync('public/manifest.json', 'utf8').replaceAll('openGym', name));
 
+// Every "openGym" the app shows: the sign-in screen, Home, toasts, every language pack. Not one
+// that follows a "/", which is a link (github.com/…/openGym) that must keep working.
+const OWN_NAME = /(?<![\/\w])openGym(?!\w)/g;
+
+// The same in what the server says itself: push notifications, the year-in-review message.
+for (const f of ['../../api/push-messages.js', '../../api/wrapped-copy.js', '../../api/nudge-copy.js']) {
+  try { fs.writeFileSync(f, fs.readFileSync(f, 'utf8').replace(OWN_NAME, name)); } catch { /* not in this checkout */ }
+}
+
 // The "lime" preset swatch and the colour handed to notifications live in the bundle.
 let hits = 0;
 for (const f of fs.readdirSync('public/assets')) {
   if (!f.endsWith('.js')) continue;
   const p = path.join('public/assets', f);
   const s = fs.readFileSync(p, 'utf8');
-  const out = s.replace(/lime:(["'`])#30d158\1/g, (m, q) => (hits++, `lime:${q}${acc}${q}`)).replaceAll('#a3e635', acc);
+  const out = s.replace(/lime:(["'`])#30d158\1/g, (m, q) => (hits++, `lime:${q}${acc}${q}`)).replaceAll('#a3e635', acc)
+    .replace(OWN_NAME, name);
   if (out !== s) fs.writeFileSync(p, out);
 }
 console.log(`branded as ${name}, accent ${acc} (${hits} preset swatch${hits === 1 ? '' : 'es'})`);
